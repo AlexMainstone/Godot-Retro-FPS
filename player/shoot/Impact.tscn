@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://player/shoot/Impact.gd" type="Script" id=1]
+
+[node name="Impact" type="Position3D"]
+script = ExtResource( 1 )

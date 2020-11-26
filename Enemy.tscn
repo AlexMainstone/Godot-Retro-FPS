@@ -1,0 +1,108 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://27846.png" type="Texture" id=1]
+[ext_resource path="res://headbox.gd" type="Script" id=2]
+[ext_resource path="res://bodybox.gd" type="Script" id=3]
+[ext_resource path="res://newsheet.png" type="Texture" id=4]
+[ext_resource path="res://Enemy.gd" type="Script" id=5]
+[ext_resource path="res://audio/headshot.wav" type="AudioStream" id=6]
+
+[sub_resource type="AtlasTexture" id=1]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=9]
+flags = 3
+atlas = ExtResource( 4 )
+region = Rect2( 64, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=10]
+flags = 3
+atlas = ExtResource( 4 )
+region = Rect2( 128, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=11]
+flags = 3
+atlas = ExtResource( 4 )
+region = Rect2( 192, 0, 64, 64 )
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ SubResource( 1 ) ],
+"loop": false,
+"name": "default",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 9 ), SubResource( 10 ), SubResource( 11 ) ],
+"loop": false,
+"name": "death",
+"speed": 5.0
+} ]
+
+[sub_resource type="CapsuleShape" id=3]
+radius = 0.630021
+height = 0.536422
+
+[sub_resource type="SphereShape" id=4]
+radius = 0.26164
+
+[sub_resource type="ParticlesMaterial" id=5]
+spread = 180.0
+initial_velocity = 4.0
+
+[sub_resource type="SpatialMaterial" id=6]
+flags_unshaded = true
+albedo_color = Color( 1, 0, 0, 1 )
+
+[sub_resource type="SphereMesh" id=7]
+material = SubResource( 6 )
+radius = 0.05
+height = 0.05
+
+[sub_resource type="CapsuleShape" id=8]
+radius = 0.423194
+height = 0.558207
+
+[node name="Enemy" type="KinematicBody"]
+script = ExtResource( 5 )
+
+[node name="Sprite" type="AnimatedSprite3D" parent="."]
+transform = Transform( 4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0 )
+billboard = 2
+frames = SubResource( 2 )
+
+[node name="worldcollider" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.014311, 0.999898, 0, -0.999898, 0.014311, 0, -0.308675, 0 )
+shape = SubResource( 3 )
+
+[node name="headbox" type="KinematicBody" parent="."]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource( 2 )
+
+[node name="head" type="CollisionShape" parent="headbox"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.373738, 0 )
+shape = SubResource( 4 )
+
+[node name="Particles" type="Particles" parent="headbox"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.399324, 0 )
+emitting = false
+amount = 40
+lifetime = 0.15
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource( 5 )
+draw_pass_1 = SubResource( 7 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="headbox"]
+stream = ExtResource( 6 )
+
+[node name="bodybox" type="KinematicBody" parent="."]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource( 3 )
+
+[node name="head" type="CollisionShape" parent="bodybox"]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, -0.492418, 0 )
+shape = SubResource( 8 )
